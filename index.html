@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAVAFİM ❤️ </title>
+    <title>NAVAFİM 💖</title>
     <style>
         body {
             margin: 0; padding: 0;
-            /* ÖNEMLİ: GitHub'daki fotoğraf ismin tam olarak arka-plan.jpg olmalı */
+            /* FOTOĞRAF: GitHub'a yüklediğin fotoğrafın adını arka-plan.jpg yapmayı unutma */
             background: #000 url('arka-plan.jpg') no-repeat center center fixed; 
             background-size: cover;
             color: #fff;
@@ -16,7 +16,6 @@
             min-height: 100vh; overflow: hidden;
         }
 
-        /* Fotoğrafın üstüne koyu bir perde (Yazılar okunsun diye) */
         body::before {
             content: '';
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -30,7 +29,7 @@
         }
 
         .login-box {
-            background: rgba(0, 0, 0, 0.8); 
+            background: rgba(0, 0, 0, 0.85); 
             padding: 40px; border: 2px solid #ff1744;
             border-radius: 20px; text-align: center; box-shadow: 0 0 30px #ff1744;
             backdrop-filter: blur(10px);
@@ -44,8 +43,9 @@
 
         .login-btn {
             background: #ff1744; color: #fff; border: none; padding: 12px 30px;
-            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; transition: 0.3s;
         }
+        .login-btn:hover { background: #ff4d79; transform: scale(1.02); }
 
         #main-content {
             display: none; z-index: 10; max-width: 600px; width: 90%;
@@ -61,18 +61,18 @@
             padding-top: 20px;
         }
         
-        /* Şarkı oynatıcısını görünmez yapıyoruz */
-        #music-box { position: absolute; left: -9999px; visibility: hidden; }
+        /* Video Oynatıcıyı Gizle */
+        #yt-player-container { position: absolute; left: -9999px; top: -9999px; }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-box">
-            <h2 style="color: #ff1744; margin-bottom: 20px;">Sana Özel ✨</h2>
+            <h2 style="color: #ff1744; margin-bottom: 20px;">Hoş Geldin Sevgilim ❤️</h2>
             <input type="text" id="username" placeholder="Kullanıcı Adı">
             <input type="password" id="password" placeholder="Şifre">
-            <button class="login-btn" onclick="surpriziBaslat()">Giriş Yap</button>
+            <button class="login-btn" onclick="sayfayiAc()">Giriş Yap</button>
             <p id="error" style="color: #ff4d4d; display: none; margin-top:15px;">Hatalı Giriş!</p>
         </div>
     </div>
@@ -82,12 +82,12 @@
         <div id="timer" class="timer-box"></div>
     </div>
 
-    <div id="music-box">
+    <div id="yt-player-container">
         <div id="player"></div>
     </div>
 
     <script>
-        // YouTube API Ayarları
+        // 1. YouTube API'sini yükle
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -96,27 +96,44 @@
         var player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'kY67m6uO46Y', // Gül Renginde - Mustafa Ceceli
-                playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0 },
-                events: { 'onReady': onPlayerReady }
+                height: '0',
+                width: '0',
+                videoId: 'kY67m6uO46Y', // Mustafa Ceceli - Gül Renginde
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'rel': 0,
+                    'showinfo': 0
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
             });
         }
 
-        function onPlayerReady(event) { /* Hazır */ }
+        function onPlayerReady(event) {
+            console.log("Şarkı hazır.");
+        }
 
-        function surpriziBaslat() {
+        function sayfayiAc() {
             const u = document.getElementById('username').value.toLowerCase().trim();
             const p = document.getElementById('password').value.trim();
 
             if (u === "navafinin sevdigi" && p === "05082023") {
-                // Şarkıyı başlat
-                if (player) { player.playVideo(); }
+                // Şarkıyı çalmaya başla
+                if (player && player.playVideo) {
+                    player.playVideo();
+                }
 
+                // Giriş ekranını kapat, içeriği göster
                 document.getElementById('login-overlay').style.display = 'none';
                 const mc = document.getElementById('main-content');
                 mc.style.display = 'block';
-                setTimeout(() => { mc.style.opacity = '1'; typeEffect(); }, 200);
+                setTimeout(() => { 
+                    mc.style.opacity = '1'; 
+                    typeWriter(); 
+                }, 200);
             } else {
                 document.getElementById('error').style.display = 'block';
             }
@@ -146,21 +163,24 @@
             "SENİ ÇOK SEVİYORUM ❤️"
         ];
 
-        let lineIdx = 0, charIdx = 0;
-        function typeEffect() {
+        let lIdx = 0, cIdx = 0;
+        function typeWriter() {
             const target = document.getElementById('text-target');
-            if (lineIdx < lines.length) {
-                if (charIdx < lines[lineIdx].length) {
-                    target.innerHTML += lines[lineIdx].charAt(charIdx);
-                    charIdx++; setTimeout(typeEffect, 50);
+            if (lIdx < lines.length) {
+                if (cIdx < lines[lIdx].length) {
+                    target.innerHTML += lines[lIdx].charAt(cIdx);
+                    cIdx++;
+                    setTimeout(typeWriter, 50);
                 } else {
                     target.innerHTML += "<br>";
-                    lineIdx++; charIdx = 0; setTimeout(typeEffect, 700);
+                    lIdx++;
+                    cIdx = 0;
+                    setTimeout(typeWriter, 700);
                 }
             }
         }
 
-        // Sayaç (05.08.2023)
+        // İlişki Sayacı (05.08.2023)
         const startD = new Date(2023, 7, 5); 
         setInterval(() => {
             const diff = new Date() - startD;
