@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAVAFİM ❤️ </title>
+    <title>NAVAFİM 💌❤❤💕</title>
     <style>
         body {
             margin: 0; padding: 0;
@@ -59,20 +59,19 @@
             font-weight: bold; border-top: 1px solid rgba(255,255,255,0.2);
             padding-top: 20px;
         }
+        
+        /* Video Oynatıcı Gizli */
+        #yt-player-container { position: absolute; left: -9999px; }
     </style>
 </head>
 <body>
-
-    <audio id="myAudio" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
 
     <div id="login-overlay">
         <div class="login-box">
             <h2 style="color: #ff1744; margin-bottom: 20px;">Hoş Geldin Sevgilim ❤️</h2>
             <input type="text" id="username" placeholder="Kullanıcı Adı">
             <input type="password" id="password" placeholder="Şifre">
-            <button class="login-btn" onclick="sayfayiAc()">Giriş Yap</button>
+            <button class="login-btn" onclick="surpriziAc()">Giriş Yap</button>
             <p id="error" style="color: #ff4d4d; display: none; margin-top:15px;">Hatalı Giriş!</p>
         </div>
     </div>
@@ -82,23 +81,38 @@
         <div id="timer" class="timer-box"></div>
     </div>
 
+    <div id="yt-player-container">
+        <div id="player"></div>
+    </div>
+
     <script>
-        function sayfayiAc() {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0',
+                videoId: 'YhhTilqRDuw', // Yeni istediğin şarkı
+                playerVars: { 'autoplay': 0, 'controls': 0 },
+                events: { 'onReady': onPlayerReady }
+            });
+        }
+
+        function onPlayerReady(event) {}
+
+        function surpriziAc() {
             const u = document.getElementById('username').value.toLowerCase().trim();
             const p = document.getElementById('password').value.trim();
-            const ses = document.getElementById("myAudio");
 
             if (u === "navafinin sevdigi" && p === "05082023") {
-                // Şarkıyı başlat
-                ses.play().catch(e => console.log("Müzik başlatılamadı:", e));
-
+                if (player) { player.playVideo(); }
                 document.getElementById('login-overlay').style.display = 'none';
                 const mc = document.getElementById('main-content');
                 mc.style.display = 'block';
-                setTimeout(() => { 
-                    mc.style.opacity = '1'; 
-                    typeWriter(); 
-                }, 200);
+                setTimeout(() => { mc.style.opacity = '1'; typeWriter(); }, 200);
             } else {
                 document.getElementById('error').style.display = 'block';
             }
@@ -134,13 +148,10 @@
             if (lIdx < lines.length) {
                 if (cIdx < lines[lIdx].length) {
                     target.innerHTML += lines[lIdx].charAt(cIdx);
-                    cIdx++;
-                    setTimeout(typeWriter, 50);
+                    cIdx++; setTimeout(typeWriter, 50);
                 } else {
                     target.innerHTML += "<br>";
-                    lIdx++;
-                    cIdx = 0;
-                    setTimeout(typeWriter, 700);
+                    lIdx++; cIdx = 0; setTimeout(typeWriter, 700);
                 }
             }
         }
