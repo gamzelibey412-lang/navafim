@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gül Renginde ❤️</title>
+    <title>NAVAFİM ✨</title>
     <style>
         body {
             margin: 0; padding: 0;
@@ -16,7 +16,7 @@
             min-height: 100vh; overflow: hidden;
         }
 
-        /* Fotoğraf gelene kadar veya gelince yazılar okunsun diye karartma */
+        /* Fotoğrafın üzerine karartma katmanı */
         body::before {
             content: '';
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -30,32 +30,38 @@
         }
 
         .login-box {
-            background: rgba(0, 0, 0, 0.8); 
+            background: rgba(0, 0, 0, 0.85); 
             padding: 40px; border: 1px solid #ff1744;
-            border-radius: 20px; text-align: center; box-shadow: 0 0 20px #ff1744;
+            border-radius: 20px; text-align: center; box-shadow: 0 0 25px #ff1744;
+            backdrop-filter: blur(10px);
         }
 
         input {
             display: block; width: 250px; padding: 12px; margin: 15px auto;
-            background: #111; border: 1px solid #ff1744; color: #fff; border-radius: 8px;
-            text-align: center; font-size: 16px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid #ff1744; color: #fff; border-radius: 8px;
+            text-align: center; font-size: 16px; outline: none;
         }
 
         .login-btn {
             background: #ff1744; color: #fff; border: none; padding: 12px 30px;
-            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s;
         }
+        .login-btn:hover { background: #ff4d79; transform: scale(1.02); }
 
         #main-content {
-            display: none; z-index: 10; max-width: 600px; width: 90%;
-            text-align: center; padding: 25px; opacity: 0; transition: 2s;
-            background: rgba(0, 0, 0, 0.7); border-radius: 20px;
+            display: none; z-index: 10; max-width: 650px; width: 90%;
+            text-align: center; padding: 30px; opacity: 0; transition: 2s;
+            background: rgba(0, 0, 0, 0.7); border-radius: 25px;
+            max-height: 85vh; overflow-y: auto;
         }
 
-        .poetry-box { font-size: 1.3em; line-height: 1.8; }
-        .timer-box { font-size: 1em; margin-top: 30px; color: #ff1744; font-weight: bold; }
+        .poetry-box { font-size: 1.4em; line-height: 1.8; text-shadow: 2px 2px 8px #000; }
+        .timer-box { 
+            font-size: 1.1em; margin-top: 40px; color: #ff1744; 
+            font-weight: bold; border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
         
-        /* Video tamamen görünmez */
         #music-container { position: absolute; left: -9999px; }
     </style>
 </head>
@@ -67,7 +73,7 @@
             <input type="text" id="username" placeholder="Kullanıcı Adı">
             <input type="password" id="password" placeholder="Şifre">
             <button class="login-btn" onclick="start()">Giriş Yap</button>
-            <p id="error" style="color: red; display: none; margin-top:10px;">Hatalı Giriş!</p>
+            <p id="error" style="color: #ff4d4d; display: none; margin-top:10px;">Hatalı Giriş Sevgilim!</p>
         </div>
     </div>
 
@@ -81,7 +87,6 @@
     </div>
 
     <script>
-        // YouTube API'sini yükle
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -96,20 +101,14 @@
             });
         }
 
-        function onPlayerReady(event) {
-            // Video hazır, kullanıcı butona basınca çalacak
-        }
+        function onPlayerReady(event) {}
 
         function start() {
             const u = document.getElementById('username').value.toLowerCase().trim();
             const p = document.getElementById('password').value.trim();
 
             if (u === "navafinin sevdigi" && p === "05082023") {
-                // Müziği çal
-                if (player && player.playVideo) {
-                    player.playVideo();
-                }
-
+                if (player && player.playVideo) { player.playVideo(); }
                 document.getElementById('login-overlay').style.display = 'none';
                 const mc = document.getElementById('main-content');
                 mc.style.display = 'block';
@@ -120,11 +119,25 @@
         }
 
         const lines = [
-            "Gül renginde gün doğarken,",
-            "Her sabah seninle uyanmak...",
+            "Gökyüzünde ne kadar yıldız varsa,",
+            "Hepsine senin ismini verdim...",
             "",
-            "Sen benim en güzel rüyam,",
-            "Hiç bitmesin istediğim masalımsın.",
+            "Sen benim en parlak yıldızımsın,",
+            "Karanlık gecelerimi aydınlatan,",
+            "Yolumu bulmamı sağlayan kutup yıldızım...",
+            "",
+            "---",
+            "",
+            "Dudaklarında baharın kokusu,",
+            "Gözlerinde sonsuzluğun huzuru var.",
+            "Seninle geçen her saniye,",
+            "Bir ömre bedel sevgilim.",
+            "",
+            "---",
+            "",
+            "İyi ki varsın,",
+            "İyi ki benimlesin.",
+            "Sonsuza dek, yıldızların altında...",
             "",
             "SENİ ÇOK SEVİYORUM ❤️"
         ];
@@ -138,17 +151,19 @@
                     c++; setTimeout(type, 50);
                 } else {
                     t.innerHTML += "<br>";
-                    l++; c = 0; setTimeout(type, 700);
+                    l++; c = 0; setTimeout(type, 750);
                 }
             }
         }
 
-        // Sayaç (05.08.2023)
+        // ESKİ SAYAÇ (GÜN, SAAT, DAKİKA)
         const startD = new Date(2023, 7, 5); 
         setInterval(() => {
             const diff = new Date() - startD;
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('timer').innerHTML = `${d} Gündür Kalbimdesin...`;
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            document.getElementById('timer').innerHTML = `Tam ${d} gün, ${h} saat, ${m} dakikadır hayatım seninle güzel... ❤️`;
         }, 1000);
     </script>
 </body>
